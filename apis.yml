@@ -1,0 +1,89 @@
+name: Azure Event Hubs
+description: Azure Event Hubs is a big data streaming platform and event ingestion service that can receive and process millions of events per second. It provides a distributed stream processing platform with low latency and seamless integration with Azure data and analytics services.
+image: https://azure.microsoft.com/svghandler/event-hubs/
+tags:
+- Event Streaming
+- Big Data
+- IoT
+- Real-time Processing
+- Message Ingestion
+created: '2024'
+modified: '2024'
+url: https://azure.microsoft.com/en-us/services/event-hubs/
+apis:
+- name: Azure Event Hubs REST API
+  description: REST API for managing Event Hubs namespaces, event hubs, consumer groups, and sending/receiving events
+  image: https://azure.microsoft.com/svghandler/event-hubs/
+  humanURL: https://learn.microsoft.com/en-us/rest/api/eventhub/
+  baseURL: https://management.azure.com
+  tags:
+  - Management
+  - Events
+  - Streaming
+  properties:
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/eventhub/
+  - type: OpenAPI
+    url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager
+  - type: Swagger
+    url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/eventhub.json
+- name: Azure Event Hubs Data Plane API
+  description: API for sending and receiving events from Event Hubs
+  image: https://azure.microsoft.com/svghandler/event-hubs/
+  humanURL: https://learn.microsoft.com/en-us/rest/api/eventhub/event-hubs-runtime-rest
+  baseURL: https://{namespace}.servicebus.windows.net
+  tags:
+  - Data Plane
+  - Send Events
+  - Receive Events
+  properties:
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/eventhub/event-hubs-runtime-rest
+  - type: OpenAPI
+    url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/data-plane
+- name: Azure Event Hubs SDK
+  description: Client libraries for various programming languages to interact with Event Hubs
+  image: https://azure.microsoft.com/svghandler/event-hubs/
+  humanURL: https://learn.microsoft.com/en-us/azure/event-hubs/sdks
+  baseURL: https://{namespace}.servicebus.windows.net
+  tags:
+  - SDK
+  - Client Library
+  properties:
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/azure/event-hubs/sdks
+  - type: .NET SDK
+    url: https://www.nuget.org/packages/Azure.Messaging.EventHubs/
+  - type: Java SDK
+    url: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs
+  - type: Python SDK
+    url: https://pypi.org/project/azure-eventhub/
+  - type: JavaScript SDK
+    url: https://www.npmjs.com/package/@azure/event-hubs
+  - type: GitHub
+    url: https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/eventhub
+common:
+- type: Portal
+  url: https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.EventHub%2Fnamespaces
+- type: Getting Started
+  url: https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-portal
+- type: Pricing
+  url: https://azure.microsoft.com/en-us/pricing/details/event-hubs/
+- type: Service Level Agreement
+  url: https://azure.microsoft.com/en-us/support/legal/sla/event-hubs/
+- type: Authentication
+  url: https://learn.microsoft.com/en-us/azure/event-hubs/authenticate-application
+- type: Best Practices
+  url: https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-best-practices
+- type: Samples
+  url: https://github.com/Azure/azure-event-hubs/tree/master/samples
+- type: Support
+  url: https://azure.microsoft.com/en-us/support/
+- type: Status
+  url: https://status.azure.com/
+- type: Blog
+  url: https://techcommunity.microsoft.com/t5/messaging-on-azure-and-net/bg-p/MessagingonAzureBlog
+maintainers:
+- FN: Microsoft Azure
+  email: azureeventhubs@microsoft.com
+  url: https://azure.microsoft.com
