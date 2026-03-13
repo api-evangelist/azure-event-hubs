@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.azure.com/eventhub/2024-01-01/namespace.json",
+  "title": "Azure Event Hubs Namespace",
+  "description": "An Azure Event Hubs namespace provides a scoping container for event hubs, consumer groups, and related resources. The namespace serves as the DNS name for the Event Hubs endpoint and provides a unique FQDN at {namespaceName}.servicebus.windows.net.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Fully qualified resource ID for the resource. Example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the namespace.",
+      "minLength": 6,
+      "maxLength": 50,
+      "pattern": "^[a-zA-Z][a-zA-Z0-9-]{6,50}[a-zA-Z0-9]$",
+      "readOnly": true
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of the resource.",
+      "const": "Microsoft.EventHub/Namespaces",
+      "readOnly": true
+    },
+    "location": {
+      "type": "string",
+      "description": "The Azure region where the namespace is deployed (e.g., East US, West Europe)."
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Resource tags for categorization and billing."
+    },
+    "sku": {
+      "$ref": "#/$defs/Sku"
+    },
+    "identity": {
+      "$ref": "#/$defs/Identity"
+    },
+    "properties": {
+      "type": "object",
+      "description": "Namespace-specific properties.",
+      "properties": {
+        "provisioningState": {
+          "type": "string",
+          "description": "Provisioning state of the Namespace.",
+          "readOnly": true
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the Namespace.",
+          "readOnly": true
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the Namespace was created.",
+          "readOnly": true
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the Namespace was updated.",
+          "readOnly": true
+        },
+        "serviceBusEndpoint": {
+          "type": "string",
+          "description": "Endpoint you can use to perform Service Bus operations.",
+          "readOnly": true
+        },
+        "metricId": {
+          "type": "string",
+          "description": "Identifier for Azure Insights metrics.",
+          "readOnly": true
+        },
+        "clusterArmId": {
+          "type": "string",
+          "description": "Cluster ARM ID of the Namespace."
+        },
+        "isAutoInflateEnabled": {
+          "type": "boolean",
+          "description": "Value that indicates whether AutoInflate is enabled for eventhub namespace."
+        },
+        "maximumThroughputUnits": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20,
+          "description": "Upper limit of throughput units when AutoInflate is enabled."
+        },
+        "kafkaEnabled": {
+          "type": "boolean",
+          "description": "Value that indicates whether Kafka is enabled for eventhub namespace."
+        },
+        "zoneRedundant": {
+          "type": "boolean",
+          "description": "Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones."
+        },
+        "disableLocalAuth": {
+          "type": "boolean",
+          "description": "This property disables SAS authentication for the Event Hubs namespace."
+        },
+        "minimumTlsVersion": {
+          "type": "string",
+          "description": "The minimum TLS version for the cluster to support.",
+          "enum": ["1.0", "1.1", "1.2"]
+        },
+        "publicNetworkAccess": {
+          "type": "string",
+          "description": "This determines if traffic is allowed over public network.",
+          "enum": ["Enabled", "Disabled", "SecuredByPerimeter"],
+          "default": "Enabled"
+        },
+        "encryption": {
+          "$ref": "#/$defs/Encryption"
+        },
+        "privateEndpointConnections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PrivateEndpointConnection"
+          },
+          "description": "List of private endpoint connections."
+        },
+        "alternateName": {
+          "type": "string",
+          "description": "Alternate name specified when alias and namespace names are same."
+        }
+      }
+    },
+    "systemData": {
+      "$ref": "#/$defs/SystemData"
+    }
+  },
+  "required": ["location"],
+  "$defs": {
+    "Sku": {
+      "type": "object",
+      "description": "SKU parameters for the namespace.",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of this SKU.",
+          "enum": ["Basic", "Standard", "Premium"]
+        },
+        "tier": {
+          "type": "string",
+          "description": "The billing tier of this particular SKU.",
+          "enum": ["Basic", "Standard", "Premium"]
+        },
+        "capacity": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The Event Hubs throughput units for Basic or Standard tiers (0-20), or premium units for Premium tier (0-10)."
+        }
+      }
+    },
+    "Identity": {
+      "type": "object",
+      "description": "Properties to configure managed identity for the namespace.",
+      "properties": {
+        "principalId": {
+          "type": "string",
+          "description": "ObjectId from the KeyVault.",
+          "readOnly": true
+        },
+        "tenantId": {
+          "type": "string",
+          "description": "TenantId from the KeyVault.",
+          "readOnly": true
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of managed service identity.",
+          "enum": ["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned", "None"]
+        },
+        "userAssignedIdentities": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "clientId": {
+                "type": "string",
+                "readOnly": true
+              },
+              "principalId": {
+                "type": "string",
+                "readOnly": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "Encryption": {
+      "type": "object",
+      "description": "Properties to configure encryption.",
+      "properties": {
+        "keySource": {
+          "type": "string",
+          "description": "Enumerates the possible value of keySource for Encryption.",
+          "enum": ["Microsoft.KeyVault"],
+          "default": "Microsoft.KeyVault"
+        },
+        "keyVaultProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "keyName": {
+                "type": "string",
+                "description": "Name of the Key from KeyVault."
+              },
+              "keyVaultUri": {
+                "type": "string",
+                "description": "Uri of KeyVault."
+              },
+              "keyVersion": {
+                "type": "string",
+                "description": "Key Version."
+              },
+              "identity": {
+                "type": "object",
+                "properties": {
+                  "userAssignedIdentity": {
+                    "type": "string",
+                    "description": "ARM ID of user Identity selected for encryption."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requireInfrastructureEncryption": {
+          "type": "boolean",
+          "description": "Enable Infrastructure Encryption (Double Encryption)."
+        }
+      }
+    },
+    "PrivateEndpointConnection": {
+      "type": "object",
+      "description": "Private endpoint connection resource.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true
+        },
+        "type": {
+          "type": "string",
+          "readOnly": true
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "privateEndpoint": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The ARM identifier for Private Endpoint."
+                }
+              }
+            },
+            "privateLinkServiceConnectionState": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["Pending", "Approved", "Rejected", "Disconnected"]
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            },
+            "provisioningState": {
+              "type": "string",
+              "enum": ["Creating", "Updating", "Deleting", "Succeeded", "Canceled", "Failed"]
+            }
+          }
+        }
+      }
+    },
+    "SystemData": {
+      "type": "object",
+      "description": "Metadata pertaining to creation and last modification of the resource.",
+      "properties": {
+        "createdBy": {
+          "type": "string",
+          "description": "The identity that created the resource."
+        },
+        "createdByType": {
+          "type": "string",
+          "description": "The type of identity that created the resource.",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of resource creation (UTC)."
+        },
+        "lastModifiedBy": {
+          "type": "string",
+          "description": "The identity that last modified the resource."
+        },
+        "lastModifiedByType": {
+          "type": "string",
+          "description": "The type of identity that last modified the resource.",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"]
+        },
+        "lastModifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of resource last modification (UTC)."
+        }
+      }
+    }
+  }
+}

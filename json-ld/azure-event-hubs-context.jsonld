@@ -1,0 +1,276 @@
+{
+  "@context": {
+    "@vocab": "https://schema.azure.com/eventhub/",
+    "azure": "https://schema.azure.com/",
+    "eh": "https://schema.azure.com/eventhub/",
+    "arm": "https://schema.azure.com/arm/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "id": {
+      "@id": "arm:resourceId",
+      "@type": "@id"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "arm:resourceType",
+      "@type": "xsd:string"
+    },
+    "location": {
+      "@id": "azure:location",
+      "@type": "xsd:string"
+    },
+    "tags": {
+      "@id": "azure:tags",
+      "@container": "@index"
+    },
+    "EHNamespace": {
+      "@id": "eh:Namespace",
+      "@context": {
+        "sku": {
+          "@id": "eh:sku",
+          "@type": "@id"
+        },
+        "identity": {
+          "@id": "azure:identity",
+          "@type": "@id"
+        },
+        "provisioningState": {
+          "@id": "azure:provisioningState",
+          "@type": "xsd:string"
+        },
+        "status": {
+          "@id": "eh:namespaceStatus",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "serviceBusEndpoint": {
+          "@id": "eh:serviceBusEndpoint",
+          "@type": "@id"
+        },
+        "clusterArmId": {
+          "@id": "eh:clusterArmId",
+          "@type": "@id"
+        },
+        "isAutoInflateEnabled": {
+          "@id": "eh:isAutoInflateEnabled",
+          "@type": "xsd:boolean"
+        },
+        "maximumThroughputUnits": {
+          "@id": "eh:maximumThroughputUnits",
+          "@type": "xsd:integer"
+        },
+        "kafkaEnabled": {
+          "@id": "eh:kafkaEnabled",
+          "@type": "xsd:boolean"
+        },
+        "zoneRedundant": {
+          "@id": "eh:zoneRedundant",
+          "@type": "xsd:boolean"
+        },
+        "disableLocalAuth": {
+          "@id": "eh:disableLocalAuth",
+          "@type": "xsd:boolean"
+        },
+        "minimumTlsVersion": {
+          "@id": "eh:minimumTlsVersion",
+          "@type": "xsd:string"
+        },
+        "publicNetworkAccess": {
+          "@id": "eh:publicNetworkAccess",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "EventHub": {
+      "@id": "eh:EventHub",
+      "@context": {
+        "partitionIds": {
+          "@id": "eh:partitionIds",
+          "@container": "@list"
+        },
+        "messageRetentionInDays": {
+          "@id": "eh:messageRetentionInDays",
+          "@type": "xsd:integer"
+        },
+        "partitionCount": {
+          "@id": "eh:partitionCount",
+          "@type": "xsd:integer"
+        },
+        "status": {
+          "@id": "eh:eventHubStatus",
+          "@type": "xsd:string"
+        },
+        "userMetadata": {
+          "@id": "eh:userMetadata",
+          "@type": "xsd:string"
+        },
+        "captureDescription": {
+          "@id": "eh:captureDescription",
+          "@type": "@id"
+        },
+        "retentionDescription": {
+          "@id": "eh:retentionDescription",
+          "@type": "@id"
+        }
+      }
+    },
+    "ConsumerGroup": {
+      "@id": "eh:ConsumerGroup",
+      "@context": {
+        "userMetadata": {
+          "@id": "eh:userMetadata",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "EventData": {
+      "@id": "eh:EventData",
+      "@context": {
+        "body": {
+          "@id": "eh:eventBody"
+        },
+        "properties": {
+          "@id": "eh:eventProperties",
+          "@container": "@index"
+        },
+        "systemProperties": {
+          "@id": "eh:systemProperties",
+          "@type": "@id"
+        },
+        "sequenceNumber": {
+          "@id": "eh:sequenceNumber",
+          "@type": "xsd:long"
+        },
+        "offset": {
+          "@id": "eh:offset",
+          "@type": "xsd:string"
+        },
+        "enqueuedTimeUtc": {
+          "@id": "eh:enqueuedTimeUtc",
+          "@type": "xsd:dateTime"
+        },
+        "partitionKey": {
+          "@id": "eh:partitionKey",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "SchemaGroup": {
+      "@id": "eh:SchemaGroup",
+      "@context": {
+        "schemaCompatibility": {
+          "@id": "eh:schemaCompatibility",
+          "@type": "xsd:string"
+        },
+        "schemaType": {
+          "@id": "eh:schemaType",
+          "@type": "xsd:string"
+        },
+        "groupProperties": {
+          "@id": "eh:groupProperties",
+          "@container": "@index"
+        }
+      }
+    },
+    "CaptureDescription": {
+      "@id": "eh:CaptureDescription",
+      "@context": {
+        "enabled": {
+          "@id": "eh:captureEnabled",
+          "@type": "xsd:boolean"
+        },
+        "encoding": {
+          "@id": "eh:captureEncoding",
+          "@type": "xsd:string"
+        },
+        "intervalInSeconds": {
+          "@id": "eh:captureIntervalInSeconds",
+          "@type": "xsd:integer"
+        },
+        "sizeLimitInBytes": {
+          "@id": "eh:captureSizeLimitInBytes",
+          "@type": "xsd:integer"
+        },
+        "destination": {
+          "@id": "eh:captureDestination",
+          "@type": "@id"
+        }
+      }
+    },
+    "DisasterRecoveryConfig": {
+      "@id": "eh:DisasterRecoveryConfig",
+      "@context": {
+        "partnerNamespace": {
+          "@id": "eh:partnerNamespace",
+          "@type": "@id"
+        },
+        "role": {
+          "@id": "eh:drRole",
+          "@type": "xsd:string"
+        },
+        "pendingReplicationOperationsCount": {
+          "@id": "eh:pendingReplicationOperationsCount",
+          "@type": "xsd:long"
+        }
+      }
+    },
+    "Sku": {
+      "@id": "eh:Sku",
+      "@context": {
+        "name": {
+          "@id": "eh:skuName",
+          "@type": "xsd:string"
+        },
+        "tier": {
+          "@id": "eh:skuTier",
+          "@type": "xsd:string"
+        },
+        "capacity": {
+          "@id": "eh:skuCapacity",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "AuthorizationRule": {
+      "@id": "eh:AuthorizationRule",
+      "@context": {
+        "rights": {
+          "@id": "eh:accessRights",
+          "@container": "@list"
+        }
+      }
+    },
+    "NetworkRuleSet": {
+      "@id": "eh:NetworkRuleSet",
+      "@context": {
+        "defaultAction": {
+          "@id": "eh:defaultAction",
+          "@type": "xsd:string"
+        },
+        "trustedServiceAccessEnabled": {
+          "@id": "eh:trustedServiceAccessEnabled",
+          "@type": "xsd:boolean"
+        },
+        "virtualNetworkRules": {
+          "@id": "eh:virtualNetworkRules",
+          "@container": "@list"
+        },
+        "ipRules": {
+          "@id": "eh:ipRules",
+          "@container": "@list"
+        }
+      }
+    }
+  }
+}

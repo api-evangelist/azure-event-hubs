@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.azure.com/eventhub/2024-01-01/eventhub.json",
+  "title": "Azure Event Hub",
+  "description": "An event hub is a partitioned log that holds events for a configurable retention period. It is the core resource within an Event Hubs namespace that receives and stores event data. Each event hub can have up to 32 partitions and supports configurable message retention, capture to storage, and multiple consumer groups.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Fully qualified resource ID for the resource. Example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the event hub.",
+      "minLength": 1,
+      "maxLength": 256,
+      "readOnly": true
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of the resource.",
+      "const": "Microsoft.EventHub/Namespaces/EventHubs",
+      "readOnly": true
+    },
+    "location": {
+      "type": "string",
+      "description": "The geo-location where the resource lives.",
+      "readOnly": true
+    },
+    "properties": {
+      "type": "object",
+      "description": "Event Hub properties.",
+      "properties": {
+        "partitionIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Current partition IDs on the Event Hub.",
+          "readOnly": true
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Exact time the Event Hub was created.",
+          "readOnly": true
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The exact time the Event Hub was last updated.",
+          "readOnly": true
+        },
+        "messageRetentionInDays": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7,
+          "description": "Number of days to retain the events for this Event Hub, value should be 1 to 7 days."
+        },
+        "partitionCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions."
+        },
+        "status": {
+          "type": "string",
+          "description": "Enumerates the possible values for the status of the Event Hub.",
+          "enum": [
+            "Active",
+            "Disabled",
+            "Restoring",
+            "SendDisabled",
+            "ReceiveDisabled",
+            "Creating",
+            "Deleting",
+            "Renaming",
+            "Unknown"
+          ]
+        },
+        "userMetadata": {
+          "type": "string",
+          "description": "Gets and Sets Metadata of User."
+        },
+        "captureDescription": {
+          "$ref": "#/$defs/CaptureDescription"
+        },
+        "retentionDescription": {
+          "$ref": "#/$defs/RetentionDescription"
+        }
+      }
+    },
+    "systemData": {
+      "$ref": "#/$defs/SystemData"
+    }
+  },
+  "$defs": {
+    "CaptureDescription": {
+      "type": "object",
+      "description": "Properties to configure capture description for the event hub. Capture automatically delivers streaming data to Azure Blob Storage or Azure Data Lake Store.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "A value that indicates whether capture is enabled."
+        },
+        "encoding": {
+          "type": "string",
+          "description": "Enumerates the possible values for the encoding format of captured data.",
+          "enum": ["Avro", "AvroDeflate"]
+        },
+        "destination": {
+          "$ref": "#/$defs/CaptureDestination"
+        },
+        "intervalInSeconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 900,
+          "description": "The time window (in seconds) for how frequently capture to Azure Blobs will happen."
+        },
+        "sizeLimitInBytes": {
+          "type": "integer",
+          "minimum": 10485760,
+          "maximum": 524288000,
+          "description": "The size window (in bytes) defining the amount of data built up before a capture operation."
+        },
+        "skipEmptyArchives": {
+          "type": "boolean",
+          "description": "A value that indicates whether to skip empty archives."
+        }
+      }
+    },
+    "CaptureDestination": {
+      "type": "object",
+      "description": "Capture storage details for capture description.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name for capture destination (e.g., EventHubArchive.AzureBlockBlob)."
+        },
+        "identity": {
+          "type": "object",
+          "description": "Managed identity for accessing the capture destination.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["SystemAssigned", "UserAssigned"]
+            },
+            "userAssignedIdentity": {
+              "type": "string",
+              "description": "ARM ID of Managed User Identity."
+            }
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "storageAccountResourceId": {
+              "type": "string",
+              "description": "Resource id of the storage account to be used to create the blobs."
+            },
+            "blobContainer": {
+              "type": "string",
+              "description": "Blob container name."
+            },
+            "archiveNameFormat": {
+              "type": "string",
+              "description": "Blob naming convention for archive (e.g., {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second})."
+            },
+            "dataLakeAccountName": {
+              "type": "string",
+              "description": "The Azure Data Lake Store name for the captured events."
+            },
+            "dataLakeFolderPath": {
+              "type": "string",
+              "description": "The destination folder path for the captured events."
+            },
+            "dataLakeSubscriptionId": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Subscription Id of Azure Data Lake Store."
+            }
+          }
+        }
+      }
+    },
+    "RetentionDescription": {
+      "type": "object",
+      "description": "Properties to configure retention settings for the event hub.",
+      "properties": {
+        "cleanupPolicy": {
+          "type": "string",
+          "description": "Enumerates the possible values for cleanup policy.",
+          "enum": ["Delete", "Compact"]
+        },
+        "retentionTimeInHours": {
+          "type": "integer",
+          "description": "Number of hours to retain the events. This value is only used when cleanupPolicy is Delete."
+        },
+        "tombstoneRetentionTimeInHours": {
+          "type": "integer",
+          "description": "Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact."
+        }
+      }
+    },
+    "SystemData": {
+      "type": "object",
+      "description": "Metadata pertaining to creation and last modification of the resource.",
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdByType": {
+          "type": "string",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastModifiedBy": {
+          "type": "string"
+        },
+        "lastModifiedByType": {
+          "type": "string",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"]
+        },
+        "lastModifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

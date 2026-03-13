@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.azure.com/eventhub/2024-01-01/event-data.json",
+  "title": "Azure Event Hubs Event Data",
+  "description": "Represents the data model for events sent to and received from Azure Event Hubs. An event consists of a body (the payload), application-defined properties (metadata), and system properties assigned by the Event Hubs service when the event is enqueued.",
+  "type": "object",
+  "properties": {
+    "body": {
+      "description": "The body of the event. Can be any serialized data including JSON objects, strings, binary data, or Avro-encoded records. The content type should be set in the system properties.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": true
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {}
+        }
+      ]
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Application-defined properties associated with the event. These are custom key-value pairs that serve as event metadata and can be used for filtering and routing."
+    },
+    "systemProperties": {
+      "type": "object",
+      "description": "System properties assigned by the Event Hubs service when the event is accepted and enqueued.",
+      "properties": {
+        "x-opt-sequence-number": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The logical sequence number of the event within the partition stream. This is a unique, monotonically increasing number assigned by Event Hubs.",
+          "readOnly": true
+        },
+        "x-opt-offset": {
+          "type": "string",
+          "description": "The offset of the event within the partition log. This string value represents the byte position and can be used as a cursor for reading.",
+          "readOnly": true
+        },
+        "x-opt-enqueued-time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The UTC time when the event was accepted and stored in the partition.",
+          "readOnly": true
+        },
+        "x-opt-partition-key": {
+          "type": "string",
+          "description": "The partition key used to determine which partition the event was sent to. Events with the same partition key are guaranteed to arrive at the same partition."
+        },
+        "x-opt-publisher": {
+          "type": "string",
+          "description": "The publisher name if the event was sent using a publisher endpoint.",
+          "readOnly": true
+        },
+        "message-id": {
+          "type": "string",
+          "description": "An application-defined identifier for the message, used for deduplication."
+        },
+        "correlation-id": {
+          "type": "string",
+          "description": "A correlation identifier for relating events across different systems."
+        },
+        "content-type": {
+          "type": "string",
+          "description": "The RFC 2046 content type of the event body (e.g., application/json, application/octet-stream)."
+        },
+        "content-encoding": {
+          "type": "string",
+          "description": "The content encoding of the event body (e.g., gzip, deflate)."
+        }
+      }
+    }
+  },
+  "required": ["body"],
+  "$defs": {
+    "BatchEventMessage": {
+      "type": "object",
+      "description": "A single message within a batch of events sent to Event Hubs via the REST API.",
+      "required": ["Body"],
+      "properties": {
+        "Body": {
+          "description": "The body content of the event message.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "UserProperties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Custom user properties for this specific event in the batch."
+        },
+        "BrokerProperties": {
+          "type": "object",
+          "description": "Broker-level properties for the message.",
+          "properties": {
+            "PartitionKey": {
+              "type": "string",
+              "description": "The partition key used to determine the target partition."
+            },
+            "Label": {
+              "type": "string",
+              "description": "Application-specific label."
+            },
+            "MessageId": {
+              "type": "string",
+              "description": "The unique identifier of the message."
+            },
+            "CorrelationId": {
+              "type": "string",
+              "description": "The correlation identifier."
+            },
+            "SessionId": {
+              "type": "string",
+              "description": "The session identifier."
+            },
+            "ReplyTo": {
+              "type": "string",
+              "description": "The address to reply to."
+            }
+          }
+        }
+      }
+    },
+    "BatchEventPayload": {
+      "type": "array",
+      "description": "An array of event messages for batch sending via the Event Hubs REST API. The Content-Type must be set to application/vnd.microsoft.servicebus.json.",
+      "items": {
+        "$ref": "#/$defs/BatchEventMessage"
+      }
+    }
+  }
+}
